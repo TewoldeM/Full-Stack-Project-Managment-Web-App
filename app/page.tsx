@@ -2,9 +2,10 @@
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 import Head from "next/head";
-import { Instagram, LinkedinIcon } from "lucide-react";
+import { Code2, Instagram, LinkedinIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { FaTelegram } from "react-icons/fa";
 
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,7 +53,7 @@ export default function Portfolio() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-blue-400">Tewolde.M</h1>
+              <h1 className="text-2xl font-bold text-blue-400"><Code2/></h1>
             </div>
             <div className="hidden md:flex space-x-8 items-center">
               <a
@@ -77,7 +78,7 @@ export default function Portfolio() {
                 href="#social"
                 className="text-blue-300 hover:text-blue-400 transition"
               >
-                Social
+                Contact
               </a>
             </div>
             <div className="md:hidden flex items-center">
@@ -315,12 +316,13 @@ export default function Portfolio() {
               whileHover={{ scale: 1.2 }}
               className="text-blue-300 hover:text-blue-400 transition"
             >
-              <Image
+              {/* <Image
                 src="/OIP (2).webp"
                 width={30}
                 height={30}
                 alt="Telegram icon"
-              />
+              /> */}
+              <FaTelegram className="w-10 h-10"/>
             </motion.a>
           </motion.div>
         </div>
