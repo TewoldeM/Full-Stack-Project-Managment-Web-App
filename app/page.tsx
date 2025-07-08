@@ -2,8 +2,9 @@
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 import Head from "next/head";
-import { Instagram, Linkedin, LinkedinIcon } from "lucide-react";
+import { Instagram, LinkedinIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function Portfolio() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -184,7 +185,7 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="text-lg text-blue-100 max-w-3xl mx-auto text-center"
           >
-            I'm a passionate full-stack developer with over 3 years of
+            I&apos;m a passionate full-stack developer with over 3 years of
             experience building dynamic and scalable web applications. I use{" "}
             <strong>Next.js</strong> both on the frontend and backend to deliver
             high-performance, full-stack solutions. My frontend development is
@@ -192,7 +193,7 @@ export default function Portfolio() {
             while on the server side, I leverage{" "}
             <strong>Next.js API routes</strong>, <strong>Prisma ORM</strong>,
             and <strong>PostgreSQL</strong> to create robust and efficient
-            data-driven systems. I'm also expanding my skills in{" "}
+            data-driven systems. I&apos;m also expanding my skills in{" "}
             <strong>Python</strong>, especially for AI and backend automation.
             My goal is to craft seamless, responsive, and intuitive digital
             experiences with clean architecture and thoughtful design.
@@ -300,27 +301,26 @@ export default function Portfolio() {
               whileHover={{ scale: 1.2 }}
               className="text-blue-300 hover:text-blue-400 transition"
             >
-              <i className="fab fa-linkedin text-4xl">
-                <LinkedinIcon />
-              </i>
+              <LinkedinIcon className="w-10 h-10" />
             </motion.a>
             <motion.a
               href="https://www.instagram.com/theo12212025"
               whileHover={{ scale: 1.2 }}
               className="text-blue-300 hover:text-blue-400 transition"
             >
-              <i className="fab fa-telegram text-4xl">
-                <Instagram />{" "}
-              </i>
+              <Instagram className="w-10 h-10" />
             </motion.a>
             <motion.a
               href="https://t.me/M_W_M_T_Y_A_L_S"
               whileHover={{ scale: 1.2 }}
               className="text-blue-300 hover:text-blue-400 transition"
             >
-              <i className="fab fa-instagram text-4xl">
-                <img src="/OIP (2).webp" width={30} height={30} />
-              </i>
+              <Image
+                src="/OIP (2).webp"
+                width={30}
+                height={30}
+                alt="Telegram icon"
+              />
             </motion.a>
           </motion.div>
         </div>
