@@ -4,7 +4,6 @@ import { useState } from "react";
 import Head from "next/head";
 import { Code2, Instagram, LinkedinIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { FaTelegram } from "react-icons/fa";
 
 export default function Portfolio() {
@@ -316,12 +315,6 @@ export default function Portfolio() {
               whileHover={{ scale: 1.2 }}
               className="text-blue-300 hover:text-blue-400 transition"
             >
-              {/* <Image
-                src="/OIP (2).webp"
-                width={30}
-                height={30}
-                alt="Telegram icon"
-              /> */}
               <FaTelegram className="w-10 h-10"/>
             </motion.a>
           </motion.div>
