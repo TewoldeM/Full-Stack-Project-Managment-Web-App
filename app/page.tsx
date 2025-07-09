@@ -219,7 +219,7 @@ export default function Portfolio() {
                 title: "Hospital Appointment Fullstack Web App",
                 desc: "A complete healthcare appointment system built with Next.js, Prisma, and PostgreSQL, allowing users to book, manage, and track appointments efficiently.",
                 github:
-                  "https://github.com/yourusername/hospital-appointment-app",
+                  "https://github.com/TewoldeM/Hospital_Appointment_Fullstack_app-",
               },
               {
                 title: "Learning managnment Fullstack Web App",
