@@ -240,7 +240,7 @@ export default function Portfolio() {
               },
               {
                 title: "VolunteerHub Fullstack Web App",
-                desc: "A platform that connects volunteers(govermenttal and NGO) with organizations. Built with Next.js, Prisma, PostgreSQL, and custom authentication.",
+                desc: "A platform that connects volunteers(govermental and NGO) with organizations. Built with Next.js, Prisma, PostgreSQL, and custom authentication.",
                 github: "https://github.com/TewoldeM/VolunteerHub",
               },
             ].map((project, index) => (
