@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import SupabaseProvider from "@/lib/supabase/SupabaseProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap", // Added for better font loading
+  adjustFontFallback: false, // Added to reduce layout shifts
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap", // Added to fix the fetch error
+  adjustFontFallback: false, // Added to reduce layout shifts
 });
 
 export const metadata: Metadata = {
@@ -23,12 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <SupabaseProvider>{children}</SupabaseProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
