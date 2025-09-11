@@ -740,9 +740,7 @@ export default function BoardPage() {
                 <DroppableColumn
                   key={key}
                   column={column}
-                  onCreateTask={async (taskData) => {
-                    await createTask(taskData);
-                  }}
+                  onCreateTask={createTask}
                   onEditColumn={handleEditColumn}
                 >
                   <SortableContext
