@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { boardDataService, boardService,columnService,taskService,} from "../services";
 import { useEffect, useState } from "react";
-import { Board, Column, ColumnWithTasks, Task } from "../supabase/models";
+import { Board,ColumnWithTasks, Task } from "../supabase/models";
 import { useSupabase } from "../supabase/SupabaseProvider";
 
 export function useBoards() {
