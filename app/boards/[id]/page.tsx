@@ -20,17 +20,36 @@ import { DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, P
 import { SortableContext,useSortable,verticalListSortingStrategy,} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-function DroppableColumn({ column, children, onCreateTask, onEditColumn, }: {
-  column: ColumnWithTasks; children: React.ReactNode;
-  onCreateTask: (taskData: any) => Promise<void>;
+function DroppableColumn({
+  column,
+  children,
+  onCreateTask,
+  onEditColumn,
+}: {
+  column: ColumnWithTasks;
+  children: React.ReactNode;
+  onCreateTask: (taskData: {
+    title: string;
+    description?: string;
+    assignee?: string;
+    dueDate?: string;
+    priority: "low" | "medium" | "high";
+  }) => Promise<void>;
   onEditColumn: (column: ColumnWithTasks) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
   return (
-    <div ref={setNodeRef}
-      className={`w-full lg:flex-shrink-0 lg:w-80 ${isOver ? "bg-blue-50 rounded-lg" : ""}`}>
+    <div
+      ref={setNodeRef}
+      className={`w-full lg:flex-shrink-0 lg:w-80 ${
+        isOver ? "bg-blue-50 rounded-lg" : ""
+      }`}
+    >
       <div
-        className={`bg-white rounded-lg shadow-sm border ${isOver ? "ring-2 ring-blue-300" : ""}`}>
+        className={`bg-white rounded-lg shadow-sm border ${
+          isOver ? "ring-2 ring-blue-300" : ""
+        }`}
+      >
         {/* Column Header */}
         <div className="p-3 sm:p-4 border-b">
           <div className="flex items-center justify-between">
@@ -42,7 +61,10 @@ function DroppableColumn({ column, children, onCreateTask, onEditColumn, }: {
                 {column.tasks.length}
               </Badge>
             </div>
-            <Button variant="ghost" size="sm" className="flex-shrink-0"
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex-shrink-0"
               onClick={() => onEditColumn(column)}
             >
               <MoreHorizontal />
@@ -69,7 +91,43 @@ function DroppableColumn({ column, children, onCreateTask, onEditColumn, }: {
                 <p className="text-sm text-gray-600">Add a task to the board</p>
               </DialogHeader>
 
-              <form className="space-y-4" onSubmit={onCreateTask}>
+              {/* 👇 updated: typed event instead of any */}
+              <form
+                className="space-y-4"
+                onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+                  onCreateTask({
+                    title: (
+                      e.currentTarget.elements.namedItem(
+                        "title"
+                      ) as HTMLInputElement
+                    )?.value,
+                    description:
+                      (
+                        e.currentTarget.elements.namedItem(
+                          "description"
+                        ) as HTMLInputElement
+                      )?.value || undefined,
+                    assignee:
+                      (
+                        e.currentTarget.elements.namedItem(
+                          "assignee"
+                        ) as HTMLInputElement
+                      )?.value || undefined,
+                    dueDate:
+                      (
+                        e.currentTarget.elements.namedItem(
+                          "dueDate"
+                        ) as HTMLInputElement
+                      )?.value || undefined,
+                    priority:
+                      ((
+                        e.currentTarget.elements.namedItem(
+                          "priority"
+                        ) as HTMLInputElement
+                      )?.value as "low" | "medium" | "high") || "medium",
+                  })
+                }
+              >
                 <div className="space-y-2">
                   <Label>Title *</Label>
                   <Input
@@ -128,6 +186,7 @@ function DroppableColumn({ column, children, onCreateTask, onEditColumn, }: {
     </div>
   );
 }
+
 
 function SortableTask({ task }: { task: Task }) {
   const {
@@ -300,19 +359,24 @@ export default function BoardPage() {
     }
     await createRealTask(targetColumn.id, taskData);
   }
-  async function handleCreateTask(e:any) {
+  async function handleCreateTask(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const taskData = {title: formData.get("title") as string,
+
+    const taskData = {
+      title: formData.get("title") as string,
       description: (formData.get("description") as string) || undefined,
       assignee: (formData.get("assignee") as string) || undefined,
       dueDate: (formData.get("dueDate") as string) || undefined,
-      priority:(formData.get("priority") as "low" | "medium" | "high") || "medium",
+      priority:
+        (formData.get("priority") as "low" | "medium" | "high") || "medium",
     };
 
     if (taskData.title.trim()) {
       await createTask(taskData);
-      const trigger = document.querySelector('[data-state="open"') as HTMLElement;
+      const trigger = document.querySelector(
+        '[data-state="open"'
+      ) as HTMLElement;
       if (trigger) trigger.click();
     }
   }
@@ -676,7 +740,9 @@ export default function BoardPage() {
                 <DroppableColumn
                   key={key}
                   column={column}
-                  onCreateTask={handleCreateTask}
+                  onCreateTask={async (taskData) => {
+                    await createTask(taskData);
+                  }}
                   onEditColumn={handleEditColumn}
                 >
                   <SortableContext

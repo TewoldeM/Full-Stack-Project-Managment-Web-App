@@ -7,7 +7,6 @@ import {
   BookCheck,
   Filter,
   MoreHorizontal,
-  Trello,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
