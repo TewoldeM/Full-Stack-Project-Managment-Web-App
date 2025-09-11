@@ -4,14 +4,16 @@ import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 import {
   ArrowLeft,
   ArrowRight,
-  BookCheck,
   Filter,
   MoreHorizontal,
+  Menu,
+  X,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Badge } from "./ui/badge";
+import { useState } from "react";
 
 interface Props {
   boardTitle?: string;
@@ -19,6 +21,7 @@ interface Props {
   onFilterClick?: () => void;
   filterCount?: number;
 }
+
 export default function Navbar({
   boardTitle,
   onEditBoard,
@@ -27,48 +30,40 @@ export default function Navbar({
 }: Props) {
   const { isSignedIn, user } = useUser();
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isDashboardPage = pathname === "/dashboard";
   const isBoardPage = pathname.startsWith("/boards/");
 
-  if (isDashboardPage) {
-    return (
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <BookCheck className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
-            <span className="text-xl sm:text-2xl font-bold text-gray-900">
-              ProjectBoard
-            </span>
-          </div>
-
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <UserButton />
-          </div>
-        </div>
-      </header>
-    );
-  }
+  // Navigation links for non-board/dashboard pages
+  const navLinks = [
+    { href: "#features", label: "Features" },
+    { href: "#pricing", label: "Pricing" },
+    { href: "#resources", label: "Resources" },
+    { href: "#support", label: "Support" },
+  ];
 
   if (isBoardPage) {
     return (
-      <header className="bg-white border-b sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 sm:py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 sm:space-x-4 min-w-0">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-4 min-w-0">
               <Link
                 href="/dashboard"
-                className="flex items-center space-x-1 sm:space-x-2 text-gray-600 hover:text-gray-900 flex-shrink-0"
+                className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors flex-shrink-0"
               >
-                <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                <ArrowLeft className="h-5 w-5" />
                 <span className="hidden sm:inline">Back to dashboard</span>
                 <span className="sm:hidden">Back</span>
               </Link>
-              <div className="h-4 sm:h-6 w-px bg-gray-300 hidden sm:block" />
-              <div className="flex items-center space-x-1 sm:space-x-2 min-w-0">
-                <BookCheck className="text-blue-600" />
-                <div className="items-center space-x-1 sm:space-x-2 min-w-0">
-                  <span className="text-lg font-bold text-gray-900 truncate">
+              <div className="h-6 w-px bg-gray-300 hidden sm:block" />
+              <div className="flex items-center space-x-2 min-w-0">
+                <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                  <div className="w-4 h-4 bg-white rounded-sm"></div>
+                </div>
+                <div className="flex items-center space-x-2 min-w-0">
+                  <span className="text-lg font-bold text-foreground truncate">
                     {boardTitle}
                   </span>
                   {onEditBoard && (
@@ -85,7 +80,7 @@ export default function Navbar({
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+            <div className="flex items-center space-x-4 flex-shrink-0">
               {onFilterClick && (
                 <Button
                   variant="outline"
@@ -110,52 +105,134 @@ export default function Navbar({
             </div>
           </div>
         </div>
-      </header>
+      </nav>
     );
   }
 
   return (
-    <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 sm:py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <BookCheck className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
-          <span className="text-xl sm:text-2xl font-bold text-gray-900">
-            ProjectBoard
-          </span>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+              <div className="w-4 h-4 bg-white rounded-sm"></div>
+            </div>
+            <span className="text-xl font-bold text-foreground">
+              ProjectBoard
+            </span>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            {!isDashboardPage &&
+              navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+          </div>
+
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center gap-4">
+            {isSignedIn ? (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  Welcome,{" "}
+                  {user.firstName ?? user.emailAddresses[0].emailAddress}
+                </span>
+                <Link href="/dashboard">
+                  <Button size="sm" className="text-sm">
+                    Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <UserButton />
+              </>
+            ) : (
+              <>
+                <SignInButton>
+                  <Button variant="ghost" size="sm" className="text-sm">
+                    Sign In
+                  </Button>
+                </SignInButton>
+                <SignUpButton>
+                  <Button size="sm" className="text-sm">
+                    Sign Up
+                  </Button>
+                </SignUpButton>
+              </>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6 text-foreground" />
+            ) : (
+              <Menu className="h-6 w-6 text-foreground" />
+            )}
+          </button>
         </div>
 
-        <div className="flex items-center space-x-2 sm:space-x-4">
-          {isSignedIn ? (
-            <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-1 sm:space-y-0 sm:space-x-4">
-              <span className="text-xs sm:text-sm text-gray-600 hidden sm:block">
-                Welcome, {user.firstName ?? user.emailAddresses[0].emailAddress}
-              </span>
-              <Link href="/dashboard">
-                <Button size="sm" className="text-xs sm:text-sm">
-                  Go to Dashboard <ArrowRight />
-                </Button>
-              </Link>
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-6 border-t border-border animate-fade-in">
+            <div className="flex flex-col gap-4">
+              {!isDashboardPage &&
+                navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-foreground hover:text-primary transition-colors py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              <div className="flex flex-col gap-3 pt-4 border-t border-border">
+                {isSignedIn ? (
+                  <>
+                    <span className="text-sm text-muted-foreground py-2">
+                      Welcome,{" "}
+                      {user.firstName ?? user.emailAddresses[0].emailAddress}
+                    </span>
+                    <Link href="/dashboard">
+                      <Button size="sm" className="justify-start text-sm">
+                        Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <UserButton />
+                  </>
+                ) : (
+                  <>
+                    <SignInButton>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="justify-start text-sm"
+                      >
+                        Sign In
+                      </Button>
+                    </SignInButton>
+                    <SignUpButton>
+                      <Button size="sm" className="justify-start text-sm">
+                        Sign Up
+                      </Button>
+                    </SignUpButton>
+                  </>
+                )}
+              </div>
             </div>
-          ) : (
-            <div>
-              <SignInButton>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs sm:text-sm"
-                >
-                  Sign In
-                </Button>
-              </SignInButton>
-              <SignUpButton>
-                <Button size="sm" className="text-xs sm:text-sm">
-                  Sign Up
-                </Button>
-              </SignUpButton>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-    </header>
+    </nav>
   );
 }
