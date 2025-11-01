@@ -7,8 +7,8 @@ import {
   columnService,
   taskService,
 } from "../services";
-import { useCallback, useEffect, useState } from "react";
-import { Board, ColumnWithTasks, Task } from "../supabase/models";
+import { useEffect, useState } from "react";
+import { Board, Column, ColumnWithTasks, Task } from "../supabase/models";
 import { useSupabase } from "../supabase/SupabaseProvider";
 
 export function useBoards() {
@@ -18,8 +18,15 @@ export function useBoards() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadBoards = useCallback(async () => {
+  useEffect(() => {
+    if (user) {
+      loadBoards();
+    }
+  }, [user, supabase]);
+
+  async function loadBoards() {
     if (!user) return;
+
     try {
       setLoading(true);
       setError(null);
@@ -30,13 +37,7 @@ export function useBoards() {
     } finally {
       setLoading(false);
     }
-  }, [supabase, user]);
-
-  useEffect(() => {
-    if (user) {
-      loadBoards();
-    }
-  }, [user, supabase, loadBoards]);
+  }
 
   async function createBoard(boardData: {
     title: string;
@@ -44,6 +45,7 @@ export function useBoards() {
     color?: string;
   }) {
     if (!user) throw new Error("User not authenticated");
+
     try {
       const newBoard = await boardDataService.createBoardWithDefaultColumns(
         supabase!,
@@ -64,13 +66,21 @@ export function useBoards() {
 export function useBoard(boardId: string) {
   const { supabase } = useSupabase();
   const { user } = useUser();
+
   const [board, setBoard] = useState<Board | null>(null);
   const [columns, setColumns] = useState<ColumnWithTasks[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadBoard = useCallback(async () => {
+  useEffect(() => {
+    if (boardId) {
+      loadBoard();
+    }
+  }, [boardId, supabase]);
+
+  async function loadBoard() {
     if (!boardId) return;
+
     try {
       setLoading(true);
       setError(null);
@@ -85,13 +95,7 @@ export function useBoard(boardId: string) {
     } finally {
       setLoading(false);
     }
-  }, [supabase, boardId]);
-
-  useEffect(() => {
-    if (boardId) {
-      loadBoard();
-    }
-  }, [boardId, supabase, loadBoard]);
+  }
 
   async function updateBoard(boardId: string, updates: Partial<Board>) {
     try {
@@ -184,6 +188,7 @@ export function useBoard(boardId: string) {
 
   async function createColumn(title: string) {
     if (!board || !user) throw new Error("Board not loaded");
+
     try {
       const newColumn = await columnService.createColumn(supabase!, {
         title,
@@ -191,6 +196,7 @@ export function useBoard(boardId: string) {
         sort_order: columns.length,
         user_id: user.id,
       });
+
       setColumns((prev) => [...prev, { ...newColumn, tasks: [] }]);
       return newColumn;
     } catch (err) {
@@ -205,11 +211,13 @@ export function useBoard(boardId: string) {
         columnId,
         title
       );
+
       setColumns((prev) =>
         prev.map((col) =>
           col.id === columnId ? { ...col, ...updatedColumn } : col
         )
       );
+
       return updatedColumn;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create column.");

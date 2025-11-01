@@ -18,7 +18,7 @@ import { useState } from "react";
 
 export default function DashboardPage() {
   const { user } = useUser();
-  const { createBoard, boards, error } = useBoards();
+  const { createBoard, boards, loading, error } = useBoards();
   const router = useRouter();
   const { isFreeUser } = usePlan();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -108,7 +108,7 @@ export default function DashboardPage() {
             {user?.firstName ?? user?.emailAddresses[0].emailAddress}! 👋
           </h1>
           <p className="text-gray-600">
-            Here&apos; what&apos; happening with your boards today.
+            Here's what's happening with your boards today.
           </p>
         </div>
 
@@ -205,6 +205,7 @@ export default function DashboardPage() {
                 </p>
               )}
             </div>
+
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <div className="flex items-center space-x-2 rounded bg-white border p-1">
                 <Button
