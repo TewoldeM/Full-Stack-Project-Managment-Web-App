@@ -13,7 +13,11 @@ const Context = createContext<SupabaseContext>({
   isLoaded: false,
 });
 
-export default function SupabaseProvider({children,}: { children: React.ReactNode;}){
+export default function SupabaseProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { session } = useSession();
   const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -23,9 +27,13 @@ export default function SupabaseProvider({children,}: { children: React.ReactNod
     const client = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {accessToken: () => session?.getToken(),});
+      {
+        accessToken: () => session?.getToken(),
+      }
+    );
+
     setSupabase(client);
-    setIsLoaded(true);  
+    setIsLoaded(true);
   }, [session]);
 
   return (
