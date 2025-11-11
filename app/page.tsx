@@ -1,6 +1,5 @@
 "use client";
 
-<<<<<<< HEAD
 import { SignUpButton, useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +18,15 @@ import {
   BookCheck,
 } from "lucide-react";
 import Navbar from "@/components/navbar";
+import { Hero } from "@/components/promted/Hero";
+import { Features } from "@/components/promted/Features";
+import { Pricing } from "@/components/promted/pricing";
+import { CTA } from "@/components/promted/CTA";
+import { Footer } from "@/components/promted/Footer";
 // import Navbar from "@/components/navbar";
 
 export default function HomePage() {
-  const { isSignedIn} = useUser();
+  const { isSignedIn } = useUser();
 
   const features = [
     {
@@ -46,29 +50,18 @@ export default function HomePage() {
       description: "Enterprise-grade security with Clerk authentication",
     },
   ];
-=======
-import { CTA } from "@/components/promted/CTA";
-import { Features } from "@/components/promted/Features";
-import { Footer } from "@/components/promted/Footer";
-import { Hero } from "@/components/promted/Hero";
-import { Pricing } from "@/components/promted/pricing";
-
-// import Navbar from "@/components/navbar";
-
-export default function HomePage() {
->>>>>>> dev
-
-  return (
-    <div className="min-h-screen">
-      <Hero />
-      <div id="features">
-        <Features />
+    return (
+      <div className="min-h-screen">
+        <Hero />
+        <div id="features">
+          <Features />
+        </div>
+        <div id="pricing">
+          <Pricing />
+        </div>
+        <CTA />
+        <Footer />
       </div>
-      <div id="pricing">
-        <Pricing />
-      </div>
-      <CTA />
-      <Footer />
-    </div>
-  );
-}
+    );
+  }
+

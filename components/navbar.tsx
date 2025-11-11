@@ -6,11 +6,8 @@ import {
   ArrowRight,
   Filter,
   MoreHorizontal,
-<<<<<<< HEAD
-=======
   Menu,
   X,
->>>>>>> dev
 } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";

@@ -16,11 +16,6 @@ export interface Column {
   created_at: string;
   user_id: string;
 }
-
-export type ColumnWithTasks = Column & {
-  tasks: Task[];
-};
-
 export interface Task {
   id: string;
   column_id: string;
@@ -32,3 +27,8 @@ export interface Task {
   sort_order: number;
   created_at: string;
 }
+export type ColumnWithTasks = Column & {
+  tasks: Task[];
+};
+
+

@@ -145,15 +145,8 @@ function DroppableColumn({
   );
 }
 
-function SortableTask({ task }: { task: Task }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: task.id });
+function SortableTask({ task }: {task:Task }) {
+  const {attributes,listeners,setNodeRef,transform,transition,isDragging,} = useSortable({ id: task.id });
 
   const styles = {
     transform: CSS.Transform.toString(transform),
@@ -219,7 +212,7 @@ function SortableTask({ task }: { task: Task }) {
   );
 }
 
-function TaskOverlay({ task }: { task: Task }) {
+function TaskOverlay({ task }: {task:Task }) {
   function getPriorityColor(priority: "low" | "medium" | "high"): string {
     switch (priority) {
       case "high":
@@ -278,16 +271,7 @@ function TaskOverlay({ task }: { task: Task }) {
 
 export default function BoardPage() {
   const { id } = useParams<{ id: string }>();
-  const {
-    board,
-    createColumn,
-    updateBoard,
-    columns,
-    createRealTask,
-    setColumns,
-    moveTask,
-    updateColumn,
-  } = useBoard(id);
+  const {board,createColumn,updateBoard,columns,createRealTask,setColumns,moveTask,updateColumn} = useBoard(id);
 
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -299,9 +283,7 @@ export default function BoardPage() {
 
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const [editingColumnTitle, setEditingColumnTitle] = useState("");
-  const [editingColumn, setEditingColumn] = useState<ColumnWithTasks | null>(
-    null
-  );
+  const [editingColumn, setEditingColumn] = useState<ColumnWithTasks | null>(null);
 
   const [filters, setFilters] = useState({
     priority: [] as string[],
@@ -513,8 +495,7 @@ export default function BoardPage() {
   }
 
   const filteredColumns = columns.map((column) => ({
-    ...column,
-    tasks: column.tasks.filter((task) => {
+    ...column,tasks: column.tasks.filter((task) => {
       // Filter by priority
       if (
         filters.priority.length > 0 &&

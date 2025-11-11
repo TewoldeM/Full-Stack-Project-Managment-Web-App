@@ -37,18 +37,13 @@ export default function DashboardPage() {
     },
   });
 
-  const canCreateBoard = !isFreeUser || boards.length < 1;
+  const canCreateBoard = !isFreeUser || boards.length < 10;
 
-  const boardsWithTaskCount = boards.map((board: Board) => ({
-    ...board,
-    taskCount: 0, // This would need to be calculated from actual data
+  const boardsWithTaskCount = boards.map((board: Board) => ({...board,taskCount: 0, // This would need to be calculated from actual data
   }));
 
   const filteredBoards = boardsWithTaskCount.filter((board: Board) => {
-    const matchesSearch = board.title
-      .toLowerCase()
-      .includes(filters.search.toLowerCase());
-
+    const matchesSearch = board.title.toLowerCase().includes(filters.search.toLowerCase());
     const matchesDateRange =
       (!filters.dateRange.start ||
         new Date(board.created_at) >= new Date(filters.dateRange.start)) &&
@@ -479,3 +474,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
